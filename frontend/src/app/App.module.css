@@ -1,0 +1,8 @@
+.routeLoader {
+  display: grid;
+  min-height: 55vh;
+  place-items: center;
+  color: var(--ink-650);
+  font-family: var(--font-display);
+  font-weight: 900;
+}

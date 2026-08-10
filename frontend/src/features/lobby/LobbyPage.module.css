@@ -1,0 +1,358 @@
+.page {
+  width: min(calc(100% - 2rem), 1040px);
+  padding: var(--space-10) 0 var(--space-8);
+  margin-inline: auto;
+}
+
+.roomHeader {
+  display: flex;
+  gap: var(--space-8);
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: var(--space-8);
+}
+
+.kicker {
+  margin: 0 0 var(--space-2);
+  color: var(--coral);
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.roomHeader h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  letter-spacing: -0.045em;
+  line-height: 1;
+}
+
+.roomHeader p:last-child {
+  margin: var(--space-3) 0 0;
+  color: var(--ink-650);
+}
+
+.codeCard {
+  display: grid;
+  min-width: 180px;
+  gap: 0.1rem;
+  padding: 0.8rem 1rem;
+  color: var(--ink-950);
+  background: var(--yellow);
+  border: 2px solid var(--ink-950);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-button);
+  text-align: left;
+  cursor: pointer;
+  transform: rotate(1deg);
+}
+
+.codeCard span,
+.codeCard small {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.codeCard strong {
+  font-family: var(--font-display);
+  font-size: 1.65rem;
+  letter-spacing: 0.11em;
+}
+
+.codeCard small {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  opacity: 0.7;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(300px, 0.75fr);
+  gap: var(--space-6);
+  align-items: start;
+}
+
+.playersCard,
+.sideCard {
+  background: rgb(255 253 248 / 85%);
+  border: 1px solid rgb(16 38 59 / 11%);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.playersCard {
+  padding: clamp(1.25rem, 4vw, 2rem);
+}
+
+.sectionHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: var(--space-5);
+  border-bottom: 1px dashed var(--paper-300);
+}
+
+.sectionHeading div {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 900;
+}
+
+.sectionHeading strong {
+  padding: 0.15rem 0.45rem;
+  background: var(--paper-200);
+  border-radius: var(--radius-pill);
+  font-size: 0.72rem;
+}
+
+.sectionHeading p {
+  margin: 0;
+  color: var(--ink-650);
+  font-size: 0.8rem;
+}
+
+.playerList {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-5) 0 0;
+  margin: 0;
+  list-style: none;
+}
+
+.player {
+  display: flex;
+  min-height: 68px;
+  gap: var(--space-3);
+  align-items: center;
+  padding: 0.65rem 0.8rem;
+  background: var(--paper-50);
+  border: 1px solid var(--paper-200);
+  border-radius: var(--radius-md);
+}
+
+.avatar {
+  display: grid;
+  width: 44px;
+  flex: 0 0 44px;
+  aspect-ratio: 1;
+  place-items: center;
+  background: var(--blue);
+  border: 1.5px solid var(--ink-950);
+  border-radius: 13px;
+  font-family: var(--font-display);
+  font-weight: 900;
+  transform: rotate(-2deg);
+}
+
+.player:nth-child(2n) .avatar {
+  background: var(--coral);
+  transform: rotate(2deg);
+}
+
+.player:nth-child(3n) .avatar {
+  background: var(--green);
+}
+
+.playerName {
+  display: grid;
+  flex: 1;
+}
+
+.playerName strong {
+  font-size: 0.95rem;
+}
+
+.playerName strong small {
+  color: var(--ink-500);
+  font-weight: 700;
+}
+
+.playerName span {
+  display: flex;
+  gap: var(--space-1);
+  align-items: center;
+  color: var(--ink-650);
+  font-size: 0.75rem;
+}
+
+.ready,
+.waiting {
+  display: grid;
+  width: 34px;
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: 50%;
+}
+
+.ready {
+  color: #276d40;
+  background: rgb(112 185 138 / 24%);
+}
+
+.waiting {
+  color: var(--ink-500);
+  background: var(--paper-200);
+}
+
+.sideCard {
+  display: grid;
+  gap: var(--space-4);
+  padding: 1.5rem;
+}
+
+.sideTitle {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+}
+
+.sideTitle > svg {
+  box-sizing: content-box;
+  padding: 0.55rem;
+  background: var(--yellow);
+  border: 1.5px solid var(--ink-950);
+  border-radius: 12px;
+}
+
+.sideTitle h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.12rem;
+}
+
+.sideTitle p,
+.startHint {
+  margin: 0.15rem 0 0;
+  color: var(--ink-650);
+  font-size: 0.76rem;
+}
+
+.settingsGrid {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.settingsGrid label {
+  display: grid;
+  gap: var(--space-1);
+  color: var(--ink-650);
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.settingsGrid select {
+  min-height: 44px;
+  padding: 0.55rem 0.7rem;
+  color: var(--ink-950);
+  background: var(--paper-50);
+  border: 2px solid var(--paper-300);
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+}
+
+.startHint {
+  text-align: center;
+}
+
+.leaveButton {
+  margin-top: var(--space-2);
+  color: var(--ink-650);
+}
+
+.error {
+  margin: 0;
+  color: var(--danger);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.centeredState,
+.loading {
+  width: min(calc(100% - 2rem), 580px);
+  padding: var(--space-16) var(--space-6);
+  margin: var(--space-12) auto;
+  text-align: center;
+}
+
+.centeredState h1 {
+  font-family: var(--font-display);
+}
+
+.centeredState p {
+  color: var(--ink-650);
+}
+
+.stateIcon {
+  display: grid;
+  width: 58px;
+  aspect-ratio: 1;
+  place-items: center;
+  margin: 0 auto var(--space-4);
+  background: var(--yellow);
+  border: 2px solid var(--ink-950);
+  border-radius: 18px;
+}
+
+.textLink {
+  font-weight: 800;
+}
+
+.loading {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.loading span {
+  height: 72px;
+  background: var(--paper-200);
+  border-radius: var(--radius-md);
+  animation: pulse 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+  to {
+    opacity: 0.45;
+  }
+}
+
+@media (max-width: 780px) {
+  .page {
+    width: min(calc(100% - 1.25rem), 1040px);
+    padding-top: var(--space-6);
+  }
+
+  .roomHeader {
+    align-items: center;
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sideCard {
+    grid-row: 1;
+  }
+}
+
+@media (max-width: 520px) {
+  .roomHeader {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .codeCard {
+    width: 100%;
+  }
+
+  .sectionHeading p {
+    display: none;
+  }
+}

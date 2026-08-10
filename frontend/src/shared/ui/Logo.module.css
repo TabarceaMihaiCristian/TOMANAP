@@ -1,0 +1,53 @@
+.logo {
+  display: inline-flex;
+  gap: 0.08em;
+  align-items: center;
+  color: var(--ink-950);
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 4vw, 1.55rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  text-decoration: none;
+}
+
+.letter {
+  display: grid;
+  width: 1.35em;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1.5px solid rgb(16 38 59 / 55%);
+  border-radius: 0.28em;
+  box-shadow: 0 2px 0 rgb(16 38 59 / 28%);
+  transform: rotate(-2deg);
+}
+
+.letter:nth-child(1) {
+  background: var(--yellow);
+}
+
+.letter:nth-child(2) {
+  background: var(--coral);
+  transform: rotate(2deg);
+}
+
+.letter:nth-child(3) {
+  background: var(--blue);
+}
+
+.letter:nth-child(4) {
+  background: var(--green);
+  transform: rotate(2deg);
+}
+
+.letter:nth-child(5) {
+  background: var(--purple);
+}
+
+.letter:nth-child(6) {
+  background: var(--orange);
+  transform: rotate(-2deg);
+}
+
+.letter:nth-child(7) {
+  background: var(--pink);
+}

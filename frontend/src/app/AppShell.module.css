@@ -1,0 +1,135 @@
+.shell {
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  width: min(calc(100% - 2rem), var(--content-max));
+  min-height: 82px;
+  align-items: center;
+  justify-content: space-between;
+  margin-inline: auto;
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.iconButton {
+  width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border-radius: 50%;
+}
+
+.offlineBanner {
+  display: flex;
+  width: min(calc(100% - 2rem), var(--content-max));
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border: 2px solid var(--ink-950);
+  border-radius: var(--radius-md);
+  margin: 0 auto var(--space-3);
+  background: var(--yellow);
+  color: var(--ink-950);
+  font-size: 0.88rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+.footer {
+  display: flex;
+  width: min(calc(100% - 2rem), var(--content-max));
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-8) 0 var(--space-6);
+  margin-inline: auto;
+  color: var(--ink-650);
+  font-size: 0.78rem;
+  text-align: center;
+}
+
+.backdrop {
+  position: fixed;
+  z-index: 20;
+  display: grid;
+  padding: var(--space-4);
+  background: rgb(20 33 61 / 55%);
+  inset: 0;
+  place-items: center;
+}
+
+.helpDialog {
+  width: min(100%, 470px);
+  padding: var(--space-6);
+  border: 2px solid var(--ink-950);
+  border-radius: var(--radius-lg);
+  background: var(--paper-50);
+  box-shadow: 8px 8px 0 var(--ink-950);
+}
+
+.helpDialog header,
+.helpDialog header > div {
+  display: flex;
+  align-items: center;
+}
+
+.helpDialog header {
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.helpDialog header > div {
+  gap: var(--space-3);
+}
+
+.helpDialog h2,
+.helpDialog p {
+  margin: 0;
+}
+
+.helpDialog ol {
+  display: grid;
+  padding-left: 1.4rem;
+  margin: var(--space-5) 0;
+  gap: var(--space-3);
+  line-height: 1.45;
+}
+
+.helpDialog p {
+  color: var(--ink-650);
+  font-size: 0.9rem;
+}
+
+.helpIcon {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-md);
+  background: var(--yellow);
+  place-items: center;
+}
+
+@media (max-width: 560px) {
+  .header {
+    width: min(calc(100% - 1.25rem), var(--content-max));
+    min-height: 72px;
+  }
+
+  .footer {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .footer span[aria-hidden="true"] {
+    display: none;
+  }
+
+  .helpDialog {
+    padding: var(--space-5);
+    box-shadow: 5px 5px 0 var(--ink-950);
+  }
+}

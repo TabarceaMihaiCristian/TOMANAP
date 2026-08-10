@@ -1,0 +1,31 @@
+name: tomanap-integration
+
+services:
+  postgres:
+    image: postgres:17.10-alpine3.23
+    environment:
+      POSTGRES_DB: tomanap_test
+      POSTGRES_USER: tomanap_test
+      POSTGRES_PASSWORD: tomanap_test_only
+    ports:
+      - "127.0.0.1:55432:5432"
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tomanap_test -d tomanap_test"]
+      interval: 1s
+      timeout: 3s
+      retries: 30
+
+  redis:
+    image: redis:7.4.9-alpine3.21
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    ports:
+      - "127.0.0.1:56379:6379"
+    tmpfs:
+      - /data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 1s
+      timeout: 3s
+      retries: 30

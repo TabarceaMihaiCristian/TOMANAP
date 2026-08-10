@@ -1,0 +1,1475 @@
+{
+  "components": {
+    "schemas": {
+      "Category": {
+        "description": "The seven answer categories in their TOMANAP display order.",
+        "enum": [
+          "countries",
+          "cities",
+          "brands",
+          "activities",
+          "names",
+          "animals",
+          "plants"
+        ],
+        "title": "Category",
+        "type": "string"
+      },
+      "CreateGameRequest": {
+        "additionalProperties": false,
+        "description": "Host-selected settings for a new anonymous room.",
+        "properties": {
+          "display_name": {
+            "maxLength": 40,
+            "minLength": 1,
+            "title": "Display Name",
+            "type": "string"
+          },
+          "round_count": {
+            "default": 5,
+            "maximum": 26.0,
+            "minimum": 1.0,
+            "title": "Round Count",
+            "type": "integer"
+          },
+          "round_duration_seconds": {
+            "default": 60,
+            "maximum": 600.0,
+            "minimum": 1.0,
+            "title": "Round Duration Seconds",
+            "type": "integer"
+          }
+        },
+        "required": ["display_name"],
+        "title": "CreateGameRequest",
+        "type": "object"
+      },
+      "CurrentRoundResponse": {
+        "description": "Current round plus only the requesting player's submission.",
+        "properties": {
+          "categories": {
+            "items": {
+              "$ref": "#/components/schemas/Category"
+            },
+            "title": "Categories",
+            "type": "array"
+          },
+          "round": {
+            "$ref": "#/components/schemas/RoundResponse"
+          },
+          "submission": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SubmissionResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": ["round", "categories", "submission"],
+        "title": "CurrentRoundResponse",
+        "type": "object"
+      },
+      "GameResponse": {
+        "description": "Public, token-free snapshot of a room or game.",
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "players": {
+            "items": {
+              "$ref": "#/components/schemas/PlayerResponse"
+            },
+            "title": "Players",
+            "type": "array"
+          },
+          "room_code": {
+            "title": "Room Code",
+            "type": "string"
+          },
+          "round_count": {
+            "title": "Round Count",
+            "type": "integer"
+          },
+          "round_duration_seconds": {
+            "title": "Round Duration Seconds",
+            "type": "integer"
+          },
+          "status": {
+            "$ref": "#/components/schemas/GameStatus"
+          }
+        },
+        "required": [
+          "id",
+          "room_code",
+          "status",
+          "round_count",
+          "round_duration_seconds",
+          "players"
+        ],
+        "title": "GameResponse",
+        "type": "object"
+      },
+      "GameStatus": {
+        "description": "Authoritative game lifecycle states.",
+        "enum": ["lobby", "in_progress", "completed"],
+        "title": "GameStatus",
+        "type": "string"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "title": "Detail",
+            "type": "array"
+          }
+        },
+        "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "HealthResponse": {
+        "description": "Stable public service-health representation.",
+        "properties": {
+          "service": {
+            "title": "Service",
+            "type": "string"
+          },
+          "status": {
+            "const": "ok",
+            "title": "Status",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "string"
+          }
+        },
+        "required": ["status", "service", "version"],
+        "title": "HealthResponse",
+        "type": "object"
+      },
+      "JoinGameRequest": {
+        "additionalProperties": false,
+        "description": "Anonymous display name submitted when joining a room.",
+        "properties": {
+          "display_name": {
+            "maxLength": 40,
+            "minLength": 1,
+            "title": "Display Name",
+            "type": "string"
+          }
+        },
+        "required": ["display_name"],
+        "title": "JoinGameRequest",
+        "type": "object"
+      },
+      "LeaderboardEntryResponse": {
+        "description": "One ranked active player.",
+        "properties": {
+          "display_name": {
+            "title": "Display Name",
+            "type": "string"
+          },
+          "player_id": {
+            "format": "uuid",
+            "title": "Player Id",
+            "type": "string"
+          },
+          "rank": {
+            "title": "Rank",
+            "type": "integer"
+          },
+          "total_score": {
+            "title": "Total Score",
+            "type": "integer"
+          }
+        },
+        "required": ["rank", "player_id", "display_name", "total_score"],
+        "title": "LeaderboardEntryResponse",
+        "type": "object"
+      },
+      "LeaderboardResponse": {
+        "description": "Cumulative standings for a game.",
+        "properties": {
+          "entries": {
+            "items": {
+              "$ref": "#/components/schemas/LeaderboardEntryResponse"
+            },
+            "title": "Entries",
+            "type": "array"
+          },
+          "game_id": {
+            "format": "uuid",
+            "title": "Game Id",
+            "type": "string"
+          }
+        },
+        "required": ["game_id", "entries"],
+        "title": "LeaderboardResponse",
+        "type": "object"
+      },
+      "PlayerResponse": {
+        "description": "Public room membership state.",
+        "properties": {
+          "display_name": {
+            "title": "Display Name",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "is_connected": {
+            "title": "Is Connected",
+            "type": "boolean"
+          },
+          "is_host": {
+            "title": "Is Host",
+            "type": "boolean"
+          },
+          "is_ready": {
+            "title": "Is Ready",
+            "type": "boolean"
+          },
+          "seat_number": {
+            "title": "Seat Number",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "display_name",
+          "seat_number",
+          "is_host",
+          "is_ready",
+          "is_connected"
+        ],
+        "title": "PlayerResponse",
+        "type": "object"
+      },
+      "PlayerReviewResponse": {
+        "description": "One player's complete round result.",
+        "properties": {
+          "answers": {
+            "items": {
+              "$ref": "#/components/schemas/ScoredAnswerResponse"
+            },
+            "title": "Answers",
+            "type": "array"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "type": "string"
+          },
+          "player_id": {
+            "format": "uuid",
+            "title": "Player Id",
+            "type": "string"
+          },
+          "total_score": {
+            "title": "Total Score",
+            "type": "integer"
+          }
+        },
+        "required": ["player_id", "display_name", "total_score", "answers"],
+        "title": "PlayerReviewResponse",
+        "type": "object"
+      },
+      "ReadinessResponse": {
+        "description": "Public dependency readiness without infrastructure details.",
+        "properties": {
+          "checks": {
+            "additionalProperties": {
+              "type": "boolean"
+            },
+            "title": "Checks",
+            "type": "object"
+          },
+          "status": {
+            "enum": ["ready", "not_ready"],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": ["status", "checks"],
+        "title": "ReadinessResponse",
+        "type": "object"
+      },
+      "ReadyRequest": {
+        "additionalProperties": false,
+        "description": "Desired lobby readiness state.",
+        "properties": {
+          "is_ready": {
+            "title": "Is Ready",
+            "type": "boolean"
+          }
+        },
+        "required": ["is_ready"],
+        "title": "ReadyRequest",
+        "type": "object"
+      },
+      "RealtimeTicketResponse": {
+        "description": "One-time WebSocket credential and its authoritative expiration.",
+        "properties": {
+          "expires_at": {
+            "format": "date-time",
+            "title": "Expires At",
+            "type": "string"
+          },
+          "ticket": {
+            "title": "Ticket",
+            "type": "string"
+          }
+        },
+        "required": ["ticket", "expires_at"],
+        "title": "RealtimeTicketResponse",
+        "type": "object"
+      },
+      "RestoreSessionRequest": {
+        "additionalProperties": false,
+        "description": "One-time reconnect credential used to rotate an anonymous session.",
+        "properties": {
+          "reconnect_token": {
+            "maxLength": 256,
+            "minLength": 32,
+            "title": "Reconnect Token",
+            "type": "string"
+          }
+        },
+        "required": ["reconnect_token"],
+        "title": "RestoreSessionRequest",
+        "type": "object"
+      },
+      "RoundAdvanceResponse": {
+        "description": "Next active round or final game completion.",
+        "properties": {
+          "current_round": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RoundResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "game_status": {
+            "$ref": "#/components/schemas/GameStatus"
+          }
+        },
+        "required": ["game_status", "current_round"],
+        "title": "RoundAdvanceResponse",
+        "type": "object"
+      },
+      "RoundResponse": {
+        "description": "Authoritative selected letter and timer state.",
+        "properties": {
+          "ends_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ends At"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "is_current": {
+            "title": "Is Current",
+            "type": "boolean"
+          },
+          "letter": {
+            "title": "Letter",
+            "type": "string"
+          },
+          "sequence_number": {
+            "title": "Sequence Number",
+            "type": "integer"
+          },
+          "starts_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Starts At"
+          },
+          "status": {
+            "$ref": "#/components/schemas/RoundStatus"
+          }
+        },
+        "required": [
+          "id",
+          "sequence_number",
+          "letter",
+          "status",
+          "is_current",
+          "starts_at",
+          "ends_at"
+        ],
+        "title": "RoundResponse",
+        "type": "object"
+      },
+      "RoundReviewResponse": {
+        "description": "All answer and score results for a closed round.",
+        "properties": {
+          "letter": {
+            "title": "Letter",
+            "type": "string"
+          },
+          "players": {
+            "items": {
+              "$ref": "#/components/schemas/PlayerReviewResponse"
+            },
+            "title": "Players",
+            "type": "array"
+          },
+          "round_id": {
+            "format": "uuid",
+            "title": "Round Id",
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/RoundStatus"
+          }
+        },
+        "required": ["round_id", "letter", "status", "players"],
+        "title": "RoundReviewResponse",
+        "type": "object"
+      },
+      "RoundStatus": {
+        "description": "Authoritative round lifecycle states.",
+        "enum": ["pending", "countdown", "active", "review", "completed"],
+        "title": "RoundStatus",
+        "type": "string"
+      },
+      "ScoredAnswerResponse": {
+        "description": "Auditable score for one category answer.",
+        "properties": {
+          "category": {
+            "$ref": "#/components/schemas/Category"
+          },
+          "normalized_answer": {
+            "title": "Normalized Answer",
+            "type": "string"
+          },
+          "original_answer": {
+            "title": "Original Answer",
+            "type": "string"
+          },
+          "points": {
+            "title": "Points",
+            "type": "integer"
+          },
+          "validation_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Validation Code"
+          }
+        },
+        "required": [
+          "category",
+          "original_answer",
+          "normalized_answer",
+          "points",
+          "validation_code"
+        ],
+        "title": "ScoredAnswerResponse",
+        "type": "object"
+      },
+      "SessionIssuedResponse": {
+        "description": "Fresh credentials plus the restored or newly joined room state.",
+        "properties": {
+          "game": {
+            "$ref": "#/components/schemas/GameResponse"
+          },
+          "player_id": {
+            "format": "uuid",
+            "title": "Player Id",
+            "type": "string"
+          },
+          "reconnect_token": {
+            "title": "Reconnect Token",
+            "type": "string"
+          },
+          "session_token": {
+            "title": "Session Token",
+            "type": "string"
+          }
+        },
+        "required": ["game", "player_id", "session_token", "reconnect_token"],
+        "title": "SessionIssuedResponse",
+        "type": "object"
+      },
+      "SubmissionAnswers": {
+        "additionalProperties": false,
+        "description": "All seven category answers sent as one replaceable draft.",
+        "properties": {
+          "activities": {
+            "default": "",
+            "maxLength": 80,
+            "title": "Activities",
+            "type": "string"
+          },
+          "animals": {
+            "default": "",
+            "maxLength": 80,
+            "title": "Animals",
+            "type": "string"
+          },
+          "brands": {
+            "default": "",
+            "maxLength": 80,
+            "title": "Brands",
+            "type": "string"
+          },
+          "cities": {
+            "default": "",
+            "maxLength": 80,
+            "title": "Cities",
+            "type": "string"
+          },
+          "countries": {
+            "default": "",
+            "maxLength": 80,
+            "title": "Countries",
+            "type": "string"
+          },
+          "names": {
+            "default": "",
+            "maxLength": 80,
+            "title": "Names",
+            "type": "string"
+          },
+          "plants": {
+            "default": "",
+            "maxLength": 80,
+            "title": "Plants",
+            "type": "string"
+          }
+        },
+        "title": "SubmissionAnswers",
+        "type": "object"
+      },
+      "SubmissionResponse": {
+        "description": "The caller's persisted draft or finalized submission.",
+        "properties": {
+          "answers": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Answers",
+            "type": "object"
+          },
+          "finalized_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Finalized At"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "is_finalized": {
+            "title": "Is Finalized",
+            "type": "boolean"
+          },
+          "normalized_answers": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Normalized Answers",
+            "type": "object"
+          },
+          "player_id": {
+            "format": "uuid",
+            "title": "Player Id",
+            "type": "string"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "integer"
+          },
+          "round_id": {
+            "format": "uuid",
+            "title": "Round Id",
+            "type": "string"
+          },
+          "submitted_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Submitted At"
+          }
+        },
+        "required": [
+          "id",
+          "round_id",
+          "player_id",
+          "answers",
+          "normalized_answers",
+          "is_finalized",
+          "submitted_at",
+          "finalized_at",
+          "revision"
+        ],
+        "title": "SubmissionResponse",
+        "type": "object"
+      },
+      "SubmissionUpsertRequest": {
+        "additionalProperties": false,
+        "description": "Whole-draft replacement before finalization or deadline.",
+        "properties": {
+          "answers": {
+            "$ref": "#/components/schemas/SubmissionAnswers"
+          }
+        },
+        "required": ["answers"],
+        "title": "SubmissionUpsertRequest",
+        "type": "object"
+      },
+      "UpdateGameSettingsRequest": {
+        "additionalProperties": false,
+        "description": "Partial host-only lobby settings update.",
+        "properties": {
+          "round_count": {
+            "anyOf": [
+              {
+                "maximum": 26.0,
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Round Count"
+          },
+          "round_duration_seconds": {
+            "anyOf": [
+              {
+                "maximum": 600.0,
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Round Duration Seconds"
+          }
+        },
+        "title": "UpdateGameSettingsRequest",
+        "type": "object"
+      },
+      "ValidationError": {
+        "properties": {
+          "ctx": {
+            "title": "Context",
+            "type": "object"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Location",
+            "type": "array"
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        },
+        "required": ["loc", "msg", "type"],
+        "title": "ValidationError",
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "title": "TOMANAP API",
+    "version": "0.1.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/games": {
+      "post": {
+        "description": "Create a room and issue its host's anonymous credentials.",
+        "operationId": "create_game_games_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateGameRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionIssuedResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Game",
+        "tags": ["games"]
+      }
+    },
+    "/games/{room_code}": {
+      "get": {
+        "description": "Return public room state without exposing anonymous credentials.",
+        "operationId": "get_game_games__room_code__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "room_code",
+            "required": true,
+            "schema": {
+              "title": "Room Code",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GameResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Game",
+        "tags": ["games"]
+      }
+    },
+    "/games/{room_code}/join": {
+      "post": {
+        "description": "Claim the next available anonymous seat in an active lobby.",
+        "operationId": "join_game_games__room_code__join_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "room_code",
+            "required": true,
+            "schema": {
+              "title": "Room Code",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JoinGameRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionIssuedResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Join Game",
+        "tags": ["players"]
+      }
+    },
+    "/games/{room_code}/leaderboard": {
+      "get": {
+        "description": "Return cumulative active-player standings with deterministic ties.",
+        "operationId": "get_leaderboard_games__room_code__leaderboard_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "room_code",
+            "required": true,
+            "schema": {
+              "title": "Room Code",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeaderboardResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Leaderboard",
+        "tags": ["leaderboard"]
+      }
+    },
+    "/games/{room_code}/leave": {
+      "post": {
+        "description": "Leave explicitly, revoke the seat's sessions, and transfer host.",
+        "operationId": "leave_game_games__room_code__leave_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "room_code",
+            "required": true,
+            "schema": {
+              "title": "Room Code",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Leave Game",
+        "tags": ["lobby"]
+      }
+    },
+    "/games/{room_code}/ready": {
+      "post": {
+        "description": "Set the current anonymous player's lobby readiness.",
+        "operationId": "set_ready_games__room_code__ready_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "room_code",
+            "required": true,
+            "schema": {
+              "title": "Room Code",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReadyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GameResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Set Ready",
+        "tags": ["lobby"]
+      }
+    },
+    "/games/{room_code}/realtime-ticket": {
+      "post": {
+        "description": "Exchange an authenticated session capability for a one-time ticket.",
+        "operationId": "issue_realtime_ticket_games__room_code__realtime_ticket_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "room_code",
+            "required": true,
+            "schema": {
+              "title": "Room Code",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RealtimeTicketResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Issue Realtime Ticket",
+        "tags": ["realtime"]
+      }
+    },
+    "/games/{room_code}/rounds/current": {
+      "get": {
+        "description": "Return current authoritative state and only the caller's draft.",
+        "operationId": "get_current_round_games__room_code__rounds_current_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "room_code",
+            "required": true,
+            "schema": {
+              "title": "Room Code",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentRoundResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Current Round",
+        "tags": ["rounds"]
+      }
+    },
+    "/games/{room_code}/rounds/next": {
+      "post": {
+        "description": "Let the host leave review and create the next round or finish.",
+        "operationId": "advance_round_games__room_code__rounds_next_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "room_code",
+            "required": true,
+            "schema": {
+              "title": "Room Code",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 128,
+                  "minLength": 8,
+                  "pattern": "^[A-Za-z0-9._:-]+$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoundAdvanceResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Advance Round",
+        "tags": ["rounds"]
+      }
+    },
+    "/games/{room_code}/settings": {
+      "patch": {
+        "description": "Allow only the active host to update lobby settings.",
+        "operationId": "update_game_settings_games__room_code__settings_patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "room_code",
+            "required": true,
+            "schema": {
+              "title": "Room Code",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateGameSettingsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GameResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Update Game Settings",
+        "tags": ["games"]
+      }
+    },
+    "/games/{room_code}/start": {
+      "post": {
+        "description": "Validate lobby readiness and transition the game to in progress.",
+        "operationId": "start_game_games__room_code__start_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "room_code",
+            "required": true,
+            "schema": {
+              "title": "Room Code",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 128,
+                  "minLength": 8,
+                  "pattern": "^[A-Za-z0-9._:-]+$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GameResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Start Game",
+        "tags": ["games"]
+      }
+    },
+    "/health": {
+      "get": {
+        "description": "Report process liveness without exposing infrastructure details.",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Health",
+        "tags": ["health"]
+      }
+    },
+    "/health/ready": {
+      "get": {
+        "description": "Report whether the process can safely receive new traffic.",
+        "operationId": "readiness_health_ready_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadinessResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Readiness",
+        "tags": ["health"]
+      }
+    },
+    "/rounds/{round_id}/review": {
+      "get": {
+        "description": "Return auditable results after early or deadline closure.",
+        "operationId": "get_round_review_rounds__round_id__review_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "round_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Round Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoundReviewResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Round Review",
+        "tags": ["rounds"]
+      }
+    },
+    "/rounds/{round_id}/submission": {
+      "put": {
+        "description": "Replace the caller's complete draft before it becomes immutable.",
+        "operationId": "upsert_submission_rounds__round_id__submission_put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "round_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Round Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmissionUpsertRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubmissionResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Upsert Submission",
+        "tags": ["submissions"]
+      }
+    },
+    "/rounds/{round_id}/submission/finalize": {
+      "post": {
+        "description": "Lock the caller's answers and close early when everyone is done.",
+        "operationId": "finalize_submission_rounds__round_id__submission_finalize_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "round_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Round Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubmissionResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Finalize Submission",
+        "tags": ["submissions"]
+      }
+    },
+    "/sessions/restore": {
+      "post": {
+        "description": "Rotate both credentials and restore the same active player seat.",
+        "operationId": "restore_session_sessions_restore_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RestoreSessionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionIssuedResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Restore Session",
+        "tags": ["sessions"]
+      }
+    }
+  }
+}
