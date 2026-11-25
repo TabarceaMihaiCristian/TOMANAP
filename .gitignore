@@ -173,3 +173,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+
+# Local Codex handoff
+/CODEX_HANDOFF.md
